@@ -18,7 +18,7 @@
  * Plugin version and other meta-data are defined here.
  *
  * @package     local_greetings
- * @copyright   dintev <juan.garces.leon@correounivalle.edu.co>
+ * @copyright   2022 Dintev <juan.garces.leon@correounivalle.edu.co>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
