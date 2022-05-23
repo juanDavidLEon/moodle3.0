@@ -32,7 +32,7 @@ $PAGE->set_title($SITE->fullname);
 $PAGE->set_heading(get_string('pluginname', 'local_greetings'));
 
 echo $OUTPUT->header();
-echo var_dump($USER);
+//echo var_dump($USER);
 
 if (isloggedin()) {
     echo local_greetings_get_greeting($USER);

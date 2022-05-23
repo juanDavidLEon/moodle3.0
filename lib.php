@@ -35,6 +35,18 @@ function local_greetings_get_greeting($user) {
         case 'ES':
             $langstr = 'greetinguseres';
             break;
+        case 'CO':
+            $langstr = 'greetinguserco';
+            break;
+        case 'NZ':
+            $langstr = 'greetingusernz';
+            break;
+        case 'FJ':
+            $langstr = 'greetinguserfj';
+            break;
+        case 'AU':
+            $langstr = 'greetinguserau';
+            break;
         default:
             $langstr = 'greetingloggedinuser';
             break;
