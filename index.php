@@ -28,11 +28,11 @@ $context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->set_url(new moodle_url('/local/greetings/index.php'));
 $PAGE->set_pagelayout('standard');
-$PAGE->set_title($SITE->fullname);
+$PAGE->set_title(get_string('pluginname', 'local_greetings'));
 $PAGE->set_heading(get_string('pluginname', 'local_greetings'));
 
 echo $OUTPUT->header();
-//echo var_dump($USER);
+// echo var_dump($USER);
 
 if (isloggedin()) {
     echo local_greetings_get_greeting($USER);
