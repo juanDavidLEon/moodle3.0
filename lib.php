@@ -22,41 +22,43 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Insert a link to index.php on the site front page navigation menu.
  *
  * @param navigation_node $frontpage Node representing the front page in the navigation tree.
  */
 function local_greetings_extend_navigation_frontpage(navigation_node $frontpage) {
-    $frontpage->add(
-        get_string('pluginname', 'local_greetings'),
-        new moodle_url('/local/greetings/index.php'),
-        navigation_node::TYPE_CUSTOM,
-        null,
-        null,
-        new pix_icon('t/message', '')
-    );
+    if (!isguestuser() && isloggedin()) {
+        $frontpage->add(
+            get_string('pluginname', 'local_greetings'),
+            new moodle_url('/local/greetings/index.php'),
+            navigation_node::TYPE_CUSTOM,
+            null,
+            null,
+            new pix_icon('t/message', '')
+        );
+    }
 }
 
 function local_greetings_extend_navigation(global_navigation $root) {
-    $node = navigation_node::create(
-        get_string('pluginname', 'local_greetings'),
-        new moodle_url('/local/greetings/index.php'),
-        navigation_node::TYPE_CUSTOM,
-        null,
-        null,
-        new pix_icon('t/message', '')
-    );
+    if (!isguestuser() && isloggedin()) {
+        $node = navigation_node::create(
+            get_string('pluginname', 'local_greetings'),
+            new moodle_url('/local/greetings/index.php'),
+            navigation_node::TYPE_CUSTOM,
+            null,
+            null,
+            new pix_icon('t/message', '')
+        );
 
-    $node->showinflatnavigation = true;
-    $root->add_node($node);
+        $node->showinflatnavigation = true;
+        $root->add_node($node);
+    }
 }
 
 function local_greetings_get_greeting($user) {
     if ($user == null) {
-        return get_string('greetinguser', 'local_greetings');
+        echo get_string('greetinguser', 'local_greetings');
     }
 
     $country = $user->country;

@@ -24,7 +24,11 @@ require_once('../../config.php');
 require_once($CFG->dirroot. '/local/greetings/lib.php');
 require_once($CFG->dirroot. '/local/greetings/message_form.php');
 
+require_login();
 
+if (isguestuser()) {
+    throw new moodle_exception('noguest');
+}
 
 $context = context_system::instance();
 $PAGE->set_context($context);
@@ -42,13 +46,13 @@ if ($data = $messageform->get_data()) {
         $record = new stdClass;
         $record->message = $message;
         $record->timecreated = time();
-
+        $record->userid = $USER->id;
         $DB->insert_record('local_greetings_messages', $record);
     }
 }
 
 echo $OUTPUT->header();
-// echo var_dump($USER);
+// echo var_dump($PAGE->url);
 
 if (isloggedin()) {
     echo local_greetings_get_greeting($USER);
@@ -63,9 +67,16 @@ $messages = $DB->get_records('local_greetings_messages');
 echo $OUTPUT->box_start('card-columns');
 
 foreach ($messages as $m) {
+    $sql = "SELECT u.firstname
+            FROM {user} u
+            WHERE {$m->userid} = u.id";
+
+    $sqlrs = $DB->get_record_sql($sql);
+
     echo html_writer::start_tag('div', array('class' => 'card'));
     echo html_writer::start_tag('div', array('class' => 'card-body'));
     echo html_writer::tag('p', $m->message, array('class' => 'card-text'));
+    echo html_writer::tag('p', get_string('postedby', 'local_greetings', $sqlrs->firstname), array('class' => 'card-text'));
     echo html_writer::start_tag('p', array('class' => 'card-text'));
     echo html_writer::tag('small', userdate($m->timecreated), array('class' => 'text-muted'));
     echo html_writer::end_tag('p');
@@ -76,4 +87,3 @@ foreach ($messages as $m) {
 echo $OUTPUT->box_end();
 
 echo $OUTPUT->footer();
-

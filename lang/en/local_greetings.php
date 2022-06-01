@@ -34,5 +34,4 @@ $string['greetinguseres'] = 'Hola, {$a}.';
 $string['greetinguserfj'] = 'Bula, {$a}.';
 $string['greetingusernz'] = 'Kia ora, {$a}.';
 $string['yourmessage'] = 'Your message';
-
-
+$string['postedby'] = 'Posted by, {$a}.';
