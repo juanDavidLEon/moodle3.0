@@ -37,9 +37,13 @@ $PAGE->set_pagelayout('standard');
 $PAGE->set_title(get_string('pluginname', 'local_greetings'));
 $PAGE->set_heading(get_string('pluginname', 'local_greetings'));
 
+$allowpost = has_capability('local/greetings:postmessages', $context);
+
 $messageform = new local_greetings_message_form();
 
 if ($data = $messageform->get_data()) {
+
+    require_capability('local/greetings:postmessages', $context);
     $message = required_param('message', PARAM_TEXT);
 
     if (!empty($message)) {
@@ -60,7 +64,9 @@ if (isloggedin()) {
     echo get_string('greetinguser', 'local_greetings');
 }
 
-$messageform->display();
+if ($allowpost) {
+    $messageform->display();
+}
 
 $messages = $DB->get_records('local_greetings_messages');
 
