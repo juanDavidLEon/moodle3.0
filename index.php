@@ -39,22 +39,26 @@ $PAGE->set_heading(get_string('pluginname', 'local_greetings'));
 
 $allowpost = has_capability('local/greetings:postmessages', $context);
 $deleteanypost = has_capability('local/greetings:deleteanymessage', $context);
+$allowviewmessages = has_capability('local/greetings:viewmessages', $context);
 
 $action = optional_param('action', '', PARAM_TEXT);
 
 if ($action == 'del') {
+
     $id = required_param('id', PARAM_TEXT);
 
-    $DB->delete_records('local_greetings_messages', array('id' => $id));
-}
+    if ($deleteanypost) {
+        $params = array('id' => $id);
 
-$allowviewmessages = has_capability('local/greetings:viewmessages', $context);
+        $DB->delete_records('local_greetings_messages', $params);
+    }
+}
 
 $messageform = new local_greetings_message_form();
 
 if ($data = $messageform->get_data()) {
-
     require_capability('local/greetings:postmessages', $context);
+
     $message = required_param('message', PARAM_TEXT);
 
     if (!empty($message)) {
@@ -68,7 +72,7 @@ if ($data = $messageform->get_data()) {
 
 echo $OUTPUT->header();
 // echo var_dump($PAGE->url);
-
+echo $allowpost;
 if (isloggedin()) {
     echo local_greetings_get_greeting($USER);
 } else {
