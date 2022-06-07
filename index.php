@@ -72,7 +72,7 @@ if ($data = $messageform->get_data()) {
 
 echo $OUTPUT->header();
 // echo var_dump($PAGE->url);
-echo $allowpost;
+
 if (isloggedin()) {
     echo local_greetings_get_greeting($USER);
 } else {
