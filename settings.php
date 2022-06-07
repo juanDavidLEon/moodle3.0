@@ -15,28 +15,25 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin strings are defined here.
- *
  * @package     local_greetings
- * @category    string
  * @copyright   2022 Dintev <juan.garces.leon@correounivalle.edu.co>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Greetings';
-$string['greetinguser'] = 'Greetings, user.';
-$string['greetingloggedinuser'] = 'Greetings, {$a}.';
-$string['greetinguserco'] = 'Buenas , {$a}.';
-$string['greetinguserau'] = 'Hola, {$a}.';
-$string['greetinguseres'] = 'Hola, {$a}.';
-$string['greetinguserfj'] = 'Bula, {$a}.';
-$string['greetingusernz'] = 'Kia ora, {$a}.';
-$string['yourmessage'] = 'Your message';
-$string['postedby'] = 'Posted by, {$a}.';
-$string['greetings:viewmessages'] = 'View messages on the Greetings wall';
-$string['greetings:postmessages'] = 'Post a new message on the Greetings wall';
-$string['greetings:deleteanymessage'] = 'Delete a message on the Greetings wall';
-$string['showinnavigation'] = 'Show in navigation';
-$string['showinnavigationdesc'] = 'When enabled will show link in navigation';
+
+if ($hassiteconfig) {
+    $settings = new admin_settingpage('local_greetings', get_string('pluginname', 'local_greetings'));
+    $ADMIN->add('localplugins', $settings);
+
+    if ($ADMIN->fulltree) {
+        require_once($CFG->dirroot . '/local/greetings/lib.php');
+
+        $settings->add(new admin_setting_configcheckbox(
+            'local_greetings/showinnavigation',
+            get_string('showinnavigation', 'local_greetings'),
+            get_string('showinnavigationdesc', 'local_greetings'),
+            '1',
+        ));
+    }
+}

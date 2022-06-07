@@ -28,15 +28,17 @@
  * @param navigation_node $frontpage Node representing the front page in the navigation tree.
  */
 function local_greetings_extend_navigation_frontpage(navigation_node $frontpage) {
-    if (!isguestuser() && isloggedin()) {
-        $frontpage->add(
+    if (get_config('local_greetings', 'showinnavigation')) {
+        if (!isguestuser() && isloggedin()) {
+            $frontpage->add(
             get_string('pluginname', 'local_greetings'),
             new moodle_url('/local/greetings/index.php'),
             navigation_node::TYPE_CUSTOM,
             null,
             null,
             new pix_icon('t/message', '')
-        );
+            );
+        }
     }
 }
 
@@ -51,7 +53,7 @@ function local_greetings_extend_navigation(global_navigation $root) {
             new pix_icon('t/message', '')
         );
 
-        $node->showinflatnavigation = true;
+        $node->showinflatnavigation = get_config('local_greetings', 'showinnavigation');
         $root->add_node($node);
     }
 }
