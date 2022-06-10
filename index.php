@@ -40,8 +40,33 @@ $PAGE->set_heading(get_string('pluginname', 'local_greetings'));
 $allowpost = has_capability('local/greetings:postmessages', $context);
 $deleteanypost = has_capability('local/greetings:deleteanymessage', $context);
 $allowviewmessages = has_capability('local/greetings:viewmessages', $context);
+$editpost = has_capability('local/greetings:editanypost', $context);
+
 
 $action = optional_param('action', '', PARAM_TEXT);
+
+if ($action == 'edit') {
+
+    $id = required_param('id', PARAM_TEXT);
+
+    if ($editpost) {
+
+        $params = array('id' => $id);
+        // $sql = "UPDATE {local_greetings_messages}
+        // SET message='hello'
+        // WHERE id= $id ";
+
+        // $DB->execute($sql);
+        $messageform = new local_greetings_message_form();
+
+        if (!empty($message)) {
+            $record = new stdclass;
+            $record->id = $id;
+            $record->message = "";
+            $DB->update_record('local_greetings_messages', $record);
+        }
+    }
+}
 
 if ($action == 'del') {
     require_sesskey();
@@ -83,6 +108,7 @@ if ($allowpost) {
     $messageform->display();
 }
 
+
 $messages = $DB->get_records('local_greetings_messages');
 
 if ($allowviewmessages) {
@@ -103,22 +129,43 @@ if ($allowviewmessages) {
         echo html_writer::tag('small', userdate($m->timecreated), array('class' => 'text-muted'));
         echo html_writer::end_tag('p');
 
-        if ($deleteanypost) {
+        if ($editpost || $deleteanypost) {
+
             echo html_writer::start_tag('p', array('class' => 'card-footer text-center'));
-            echo html_writer::link(
-            new moodle_url(
-                '/local/greetings/index.php',
-                array('action' => 'del', 'id' => $m->id, 'sesskey' => sesskey())
-            ),
-            $OUTPUT->pix_icon('t/delete', '') . get_string('delete')
-            );
+
+            if ($editpost) {
+
+                    echo html_writer::link(
+                        new moodle_url(
+                            '/local/greetings/index.php',
+                            array('action' => 'edit', 'id' => $m->id)
+                        ),
+                        $OUTPUT->pix_icon('t/editinline', ''),
+                        array('role' => 'button', 'aria-label' => get_string('edit', 'local_greetings'), 'title' => get_string('edit','local_greetings')));
+            }
+
+
+            if ($deleteanypost) {
+                echo html_writer::link(
+                        new moodle_url(
+                            '/local/greetings/index.php',
+                            array('action' => 'del', 'id' => $m->id, 'sesskey' => sesskey())
+                        ),
+                        $OUTPUT->pix_icon('t/delete', ''),
+                        array('role' => 'button', 'aria-label' => get_string('delete'), 'title' => get_string('delete')));
+            }
+
             echo html_writer::end_tag('p');
         }
+        /*if ($editpost) {
+            $messageform->display();
+        }*/
 
         echo html_writer::end_tag('div');
         echo html_writer::end_tag('div');
     }
-        echo $OUTPUT->box_end();
+    echo $OUTPUT->box_end();
 }
+
 
 echo $OUTPUT->footer();

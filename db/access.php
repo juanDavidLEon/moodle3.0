@@ -50,4 +50,12 @@ $capabilities = array(
             'user' => CAP_ALLOW,
         )
     ),
+        'local/greetings:editanypost' => array(
+        'riskbitmask' => RISK_SPAM,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'user' => CAP_ALLOW,
+        )
+    ),
 );
