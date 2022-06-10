@@ -34,6 +34,8 @@ class lib_test extends \advanced_testcase {
      * @param string $langstring Greetings message language string
      */
     public function test_local_greetings_get_greeting(?string $country, string $langstring) {
+        $country = 'ES';
+        $langstring = 'greetinguseres';
         $user = null;
         if (!empty($country)) {
             $this->resetAfterTest(true);

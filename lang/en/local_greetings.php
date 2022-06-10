@@ -42,5 +42,4 @@ $string['greetings:editanypost'] = 'Edit messages on the Greetings wall';
 $string['showinnavigation'] = 'Show in navigation';
 $string['showinnavigationdesc'] = 'When enabled will show link in navigation';
 $string['edit'] = 'Edit post';
-$string['greetings:editform'] = 'Edition form';
 
